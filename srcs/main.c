@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 00:26:23 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/09 18:52:07 by dmendelo         ###   ########.fr       */
+/*   Updated: 2018/11/09 20:46:04 by dmendelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@
 void	pixel_str(t_mlx *m)
 {
 	m->img_ptr = mlx_new_image(m->mlx, m->width, m->height);
-	m->img_int = (int*)mlx_get_data_addr(
+	m->img_int = mlx_get_data_addr(
 		m->img_ptr, &m->bpp, &m->size_line, &m->endian);
+	m->bpp /= 8;
 }
 
 /*
@@ -54,11 +55,16 @@ void pixel_put(t_mlx *mlx, int x, int y, int color){
 	if (x < mlx->wsize && y < mlx->wsize)
 		// if (y >= 0 && x >= 0) /////Maybe add back
 		{
-			int i = (x) + (y * mlx->size_line / 4);
+		//	printf("bpp = %d\n", mlx->bpp);
+//			mlx->bpp = 4;
+			mlx->img_int[y * mlx->size_line + x * mlx->bpp] = color;
+	mlx->img_int[y * mlx->size_line + x * mlx->bpp + 1] = color >> 8;
+	mlx->img_int[y * mlx->size_line + x * mlx->bpp + 2] = color >> 16;
+		//	int i = (x) + (y * mlx->size_line / 4);
 			// mlx->img_int[((y * mlx->size_line/4) + x)] = color;
-			mlx->img_int[i] = color;
-			mlx->img_int[++i] = color >> 8;
-			mlx->img_int[++i] = color >> 16;
+//			mlx->img_int[i] = color;
+//			mlx->img_int[++i] = color >> 8;
+//			mlx->img_int[++i] = color >> 16;
 		}
 }
 

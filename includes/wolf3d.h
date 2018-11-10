@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 00:26:23 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/09 18:43:37 by dmendelo         ###   ########.fr       */
+/*   Updated: 2018/11/09 21:24:48 by dmendelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,14 @@
 #define RGB_Blue 0x0000FF   //blue
 #define RGB_White 0xFFFFFF  //white
 #define RGB_Yellow 0xFFFF00 //yellow
+#define RGB_GREY 0xA9A9A9 //grey
 
 
 
 
 typedef struct		s_mlx
 {
-	int				*img_int;
+	char			*img_int;
 	void			*mlx_ptr;
 	void			*img_ptr;
 	int				bpp;
