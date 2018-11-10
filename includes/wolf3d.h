@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 00:26:23 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/09 21:24:48 by dmendelo         ###   ########.fr       */
+/*   Updated: 2018/11/10 13:55:30 by dmendelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ typedef struct		s_raycast
 	t_point_int		step; //direction to step in?
 	double			perp_wall_dist;
 	double			camera_x;
-	int				hit:1; //did we hit a wall?
-	int				side:1;
+	int				hit; //did we hit a wall?
+	int				side;
 }					t_raycast;
 
 typedef	struct		s_thread
