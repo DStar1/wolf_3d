@@ -16,3 +16,5 @@ a.out
 .AppleDesktop
 .apdisk
 obj/*
+*.swp
+*.swo

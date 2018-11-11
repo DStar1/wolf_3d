@@ -1,0 +1,5 @@
+(x-value)x(y-value)
+(matrix[x][y] in text)
+1 -> full
+0 -> empty
+S ->start position (facing north?)
