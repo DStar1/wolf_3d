@@ -3,156 +3,179 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmendelo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 17:34:04 by dmendelo          #+#    #+#             */
-/*   Updated: 2018/11/10 14:36:28 by dmendelo         ###   ########.fr       */
+/*   Updated: 2018/11/10 17:34:34 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void			print_r_struct(t_raycast *r)
+void			print_r_struct(t_mlx *m)//t_raycast *r)
 {
-	if (!r)
+	if (!m->r)
 		return ;
 	printf("-------------------------------------------\n");
-	printf("position = [%f][%f]\n", r->pos.y, r->pos.x);
-	printf("map = [%d][%d]\n", r->map.y, r->map.x);
-	printf("direction = [%f][%f]\n", r->direction.y, r->direction.x);
-	printf("plane = [%f][%f]\n", r->plane.y, r->plane.x);
-	printf("ray direction = [%f][%f]\n", r->ray.y, r->ray.x);
-	printf("delta distance = [%f][%f]\n", r->delta_dist.y, r->delta_dist.x);
-	printf("side distance = [%f][%f]\n", r->side_dist.y, r->side_dist.x);
-	printf("step = [%d][%d]\n", r->step.y, r->step.x);
-	printf("perp_wall_dist = %f\n", r->perp_wall_dist);
-	printf("camera_x = %f\n", r->camera_x);
+	printf("position = [%f][%f]\n", m->r->pos.y, m->r->pos.x);
+	printf("map = [%d][%d]\n", m->r->map.y, m->r->map.x);
+	printf("direction = [%f][%f]\n", m->r->direction.y, m->r->direction.x);
+	printf("plane = [%f][%f]\n", m->r->plane.y, m->r->plane.x);
+	printf("ray direction = [%f][%f]\n", m->r->ray.y, m->r->ray.x);
+	printf("delta distance = [%f][%f]\n", m->r->delta_dist.y, m->r->delta_dist.x);
+	printf("side distance = [%f][%f]\n", m->r->side_dist.y, m->r->side_dist.x);
+	printf("step = [%d][%d]\n", m->r->step.y, m->r->step.x);
+	printf("perp_wall_dist = %f\n", m->r->perp_wall_dist);
+	printf("camera_x = %f\n", m->r->camera_x);
 }
 
 void			init_raycast_vars(t_mlx *m, t_map *map, t_raycast *r)
 {
-	r->pos.x = map->start.x;
-	r->pos.y = map->start.y;
-	r->direction.x = -1;
-	r->direction.y = 0;
-	r->plane.x = 0;
-	r->plane.y = 0.66;
+	m->r->pos.x = map->start.x;
+	m->r->pos.y = map->start.y;
+	m->r->direction.x = -1;
+	m->r->direction.y = 0;
+	m->r->plane.x = 0;
+	m->r->plane.y = 0.66;
+	m->r->time = 0; //time of current frame
+	m->r->oldTime = 0; //time of previous frame
 }
 
-void			configure_ray(t_raycast *r, t_mlx *m, int x)
+void			configure_ray(t_mlx *m, int x)//t_raycast *r, t_mlx *m, int x)
 {
 
-	r->camera_x = 2 * x / (double)m->width - 1;
-	printf("camera = %f\n", r->camera_x);
-	r->ray.x = r->direction.x + r->plane.x * r->camera_x;
-	r->ray.y = r->direction.y + r->plane.y * r->camera_x;
-	r->map.x = (int)(floor(r->pos.x));
-	r->map.y = (int)(floor(r->pos.y));
-	r->delta_dist.x = fabs(1 / r->ray.x);
-	r->delta_dist.y = fabs(1 / r->ray.y);
+	m->r->camera_x = (double)(2.0 * x) / (double)m->width - 1;
+	printf("camera = %f\n", m->r->camera_x);
+	m->r->ray.x = m->r->direction.x + m->r->plane.x * m->r->camera_x;
+	m->r->ray.y = m->r->direction.y + m->r->plane.y * m->r->camera_x;
+	m->r->map.x = (int)(floor(m->r->pos.x));
+	m->r->map.y = (int)(floor(m->r->pos.y));
+	m->r->delta_dist.x = fabs(1 / m->r->ray.x);
+	m->r->delta_dist.y = fabs(1 / m->r->ray.y);
 }
 
-void			pre_dda(t_raycast *r)
+void			pre_dda(t_mlx *m)//t_raycast *r)
 {
-	if (r->ray.x < 0)
+	if (m->r->ray.x < 0)
 	{
-		r->step.x = -1;
-		r->side_dist.x = ((r->pos.x) - r->map.x) * r->delta_dist.x;
+		m->r->step.x = -1;
+		m->r->side_dist.x = ((m->r->pos.x) - m->r->map.x) * m->r->delta_dist.x;
 	}
 	else
 	{
-		r->step.x = 1;
-		r->side_dist.x = ((r->map.x) + 1.0 - r->pos.x) * r->delta_dist.x;
+		m->r->step.x = 1;
+		m->r->side_dist.x = ((m->r->map.x) + 1.0 - m->r->pos.x) * m->r->delta_dist.x;
 	}
-	if (r->ray.y < 0)
+	if (m->r->ray.y < 0)
 	{	
-		r->step.y = -1;
-		r->side_dist.y = ((r->pos.y) - r->map.y) * r->delta_dist.y;
+		m->r->step.y = -1;
+		m->r->side_dist.y = ((m->r->pos.y) - m->r->map.y) * m->r->delta_dist.y;
 	}
 	else
 	{
-		r->step.y = 1;	
-		r->side_dist.y = ((r->map.y) + 1.0 - r->pos.y) * r->delta_dist.y;
+		m->r->step.y = 1;	
+		m->r->side_dist.y = ((m->r->map.y) + 1.0 - m->r->pos.y) * m->r->delta_dist.y;
 	}
 }
 
-void			do_dda(t_raycast *r, t_map *map)
+void			do_dda(t_mlx *m, t_map *map)//t_raycast *r, t_map *map)
 {
-	r->hit = 0;
-	while (!r->hit)
+	m->r->hit = 0;
+	while (!m->r->hit)
 	{
-	//	printf("r-Map = [%d][%d]\n", r->map.y, r->map.x);
-		if (r->side_dist.x < r->side_dist.y)
+	//	printf("r-Map = [%d][%d]\n", m->r->map.y, m->r->map.x);
+		if (m->r->side_dist.x < m->r->side_dist.y)
 		{
-			r->side_dist.x += r->delta_dist.x;
-			r->map.x += r->step.x;
-			r->side = 0;
+			m->r->side_dist.x += m->r->delta_dist.x;
+			m->r->map.x += m->r->step.x;
+			m->r->side = 0;
 		}
 		else
 		{
-			r->side_dist.y += r->delta_dist.y;
-			r->map.y += r->step.y;
-			r->side = 1;
+			m->r->side_dist.y += m->r->delta_dist.y;
+			m->r->map.y += m->r->step.y;
+			m->r->side = 1;
 		}
-		if (r->map.y <= 6  && r->map.y >= 4)
+		if (m->r->map.y <= 6  && m->r->map.y >= 4)
 		{
 	//		print_r_struct(r);
 		}
-		if (map->map[r->map.y][r->map.x] == '1')
+		if (m->map->map[m->r->map.y][m->r->map.x] == '1')
 		{
-			printf("hit! -> map[%i][%i]\n", r->map.y, r->map.x);
-//			printf("camera = %f\n", r->camera_x);
+			printf("hit! -> map[%i][%i]\n", m->r->map.y, m->r->map.x);
+//			printf("camera = %f\n", m->r->camera_x);
 //			print_r_struct(r);
-			r->hit = 1;
+			m->r->hit = 1;
 		}
 	}
 }
 
-void			wall_distance(t_raycast *r)
+void			wall_distance(t_mlx *m)//t_raycast *r)
 {
-	r->perp_wall_dist = (r->side == 0) ?
-	(r->map.x - r->pos.x + (1 - r->step.x) / 2) / r->ray.x :
-	(r->map.y - r->pos.y + (1 - r->step.y) / 2) / r->ray.y;
+	m->r->perp_wall_dist = (m->r->side == 0) ?
+	(m->r->map.x - m->r->pos.x + (1 - m->r->step.x) / 2) / m->r->ray.x :
+	(m->r->map.y - m->r->pos.y + (1 - m->r->step.y) / 2) / m->r->ray.y;
 }
 
-void			configure_line(t_raycast *r, t_mlx *m, t_map *map, int x)
+void			configure_line(t_mlx *m, t_map *map, int x)//t_raycast *r, t_mlx *m, t_map *map, int x)
 {
 	int					line_height;
 	int					draw_start;
 	int					draw_end;
 	int					color;
 
-	line_height = (int)(m->height / r->perp_wall_dist);
+	line_height = (int)(m->height / m->r->perp_wall_dist);
 	draw_start = -line_height / 2 + m->height / 2;
 	if (draw_start < 0)
 		draw_start = 0;
 	draw_end = line_height / 2 + m->height / 2;
 	if (draw_end >= m->height)
 		draw_end = m->height - 1;
-	if (map->map[r->map.y][r->map.x] == '1')
+	if (m->map->map[m->r->map.y][m->r->map.x] == '1')
 		color = RGB_GREY;
-//	if (r->side)
+//	if (m->r->side)
 //		color += 58;
 	verLine(x, draw_start, draw_end, color, m);
 }
 
 void			start(t_mlx *m, t_map *map){
-	t_raycast			r;
+	// t_raycast			*r;
+	mlx_destroy_image(m->mlx, m->img_ptr);
+	pixel_str(m);
+	// r = m->r;//round about way of master struct
 
-	init_raycast_vars(m, map, &r);
-	double time = 0; //time of current frame
-	double oldTime = 0; //time of previous frame
+	// r = malloc(sizeof(t_raycast));
+	// init_raycast_vars(m, map, r);
+
+	//assert(m->r);
 	for(int x = 0; x < m->width; x++)
 	{
-		configure_ray(&r, m, x);
+		// assert(m->r);
+		configure_ray(m, x);//configure_ray(r, m, x);
 
-		r.hit = 0;
-		pre_dda(&r);
+		m->r->hit = 0;
+		pre_dda(m);//pre_dda(r);
 		//perform DDA
-		do_dda(&r, map);
+		do_dda(m, map);//do_dda(r, map);
 		//Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
-		wall_distance(&r);
+		wall_distance(m);//wall_distance(r);
 //		print_r_struct(&r);
-		configure_line(&r, m, map, x);
+		configure_line(m, map, x);//configure_line(r, m, map, x);
 	}
+
+    // //timing for input and FPS counter
+    // m->r->oldTime = m->r->time;
+    // m->r->time = getTicks();
+    // m->r->frameTime = (m->r->time - m->r->oldTime) / 1000.0; //frameTime is the time this frame has taken, in seconds
+    // printf("%f\n", 1.0 / m->r->frameTime); //FPS counter
+    // // redraw();
+    // // cls();
+
+    //speed modifiers
+    m->r->moveSpeed = .2; //the constant value is in squares/second
+    m->r->rotSpeed = .2; //the constant value is in radians/second
+    // //speed modifiers
+    // m->r->moveSpeed = m->r->frameTime * 5.0; //the constant value is in squares/second
+    // m->r->rotSpeed = m->r->frameTime * 3.0; //the constant value is in radians/second
+	create_image(m);
 }

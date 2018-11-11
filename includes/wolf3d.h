@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 00:26:23 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/10 13:55:30 by dmendelo         ###   ########.fr       */
+/*   Updated: 2018/11/10 17:34:56 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <sys/types.h>
+# include <assert.h>
 
 # define USAGE "wolf3d -> Usage:\n./wolf3d [map]\n"
 # define MAP_ERROR "Invalid Map!\n"
@@ -37,28 +38,7 @@
 
 
 
-typedef struct		s_mlx
-{
-	char			*img_int;
-	void			*mlx_ptr;
-	void			*img_ptr;
-	int				bpp;
-	int				size_line;
-	int				endian;
-	void			*mlx;
-	void			*win;
-	int				im_buff_size;
 
-	int				exit;
-	int				space;
-	int				wsize;
-	int				height;
-	int				width;
-	int				mouse_x;
-	int				mouse_y;
-
-	int				theme;
-}					t_mlx;
 
 typedef struct		s_point
 {
@@ -101,13 +81,56 @@ typedef struct		s_raycast
 	double			camera_x;
 	int				hit; //did we hit a wall?
 	int				side;
+
+    double			moveSpeed;
+    double			rotSpeed;
+	double			frameTime;
+  	double 			time;
+  	double 			oldTime;
 }					t_raycast;
 
-typedef	struct		s_thread
+// typedef	struct		s_thread
+// {
+// 	t_mlx	*m;
+// 	int		count;
+// }					t_thread;
+
+// // Later impliment for master struct
+// typedef	struct		s_mast
+// {
+// 	t_mlx	*mlx;
+// 	t_map	*map;
+// 	t_raycast *r;
+
+// }					t_mast;
+
+typedef struct		s_mlx
 {
-	t_mlx	*m;
-	int		count;
-}					t_thread;
+	char			*img_int;
+	void			*mlx_ptr;
+	void			*img_ptr;
+	int				bpp;
+	int				size_line;
+	int				endian;
+	void			*mlx;
+	void			*win;
+	int				im_buff_size;
+
+	int				exit;
+	int				space;
+	int				wsize;
+	int				height;
+	int				width;
+	int				mouse_x;
+	int				mouse_y;
+
+	int				theme;
+
+	//change to master struct//
+	t_map			*map;
+	t_raycast 		*r;
+	/////////////////////////
+}					t_mlx;
 
 t_map			*read_validate_map(char *filename);
 
@@ -118,4 +141,13 @@ int				ptr_count(char **s);
 void			set_hooks(t_mlx *m);
 void			start(t_mlx *m, t_map *map);
 int 			verLine(int x, int y1, int y2, int color, t_mlx *m);
+void			init_raycast_vars(t_mlx *m, t_map *map, t_raycast *r);
+void			move_forward(t_mlx *m);
+void			move_back(t_mlx *m);
+void			move_left(t_mlx *m);
+void			move_right(t_mlx *m);
+int				key_press_hook(int keycode, t_mlx *mast);
+void			create_image(t_mlx *m);
+void	pixel_str(t_mlx *m);
+
 #endif 

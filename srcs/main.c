@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 00:26:23 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/10 14:18:30 by dmendelo         ###   ########.fr       */
+/*   Updated: 2018/11/10 17:35:53 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,40 +90,50 @@ int verLine(int x, int y1, int y2, int color, t_mlx *m){
 
 void			load_engine(t_map *map, t_mlx *m)
 {
-	ft_bzero(m, sizeof(*m));
 	m->wsize = 1000;
 	m->mlx = mlx_init();
 	m->win = mlx_new_window(m->mlx, m->wsize, m->wsize, "wolf3d");
 	init(m);
 	pixel_str(m);
 	start(m, map);
-	create_image(m);
+
 }
 
-void			wolf3d(char *mapname)
+void			wolf3d(char *mapname)//, t_mlx *mast)
 {
-	t_map				*map;
-	t_mlx				mast;
-//	t_player			*player;
+	// t_map				*map;
+	t_mlx				*mast;
+	t_raycast			*r;
 
-
-	map = read_validate_map(mapname);
-	if (!map)
+	mast = malloc(sizeof(t_mlx));
+	ft_bzero(mast, sizeof(*mast));
+	r = malloc(sizeof(*r));
+	mast->r = r;
+	mast->map = read_validate_map(mapname);
+	if (!mast->map)
 	{
 		write(2, MAP_ERROR, sizeof(MAP_ERROR));
 		return ;
 	}
-	load_engine(map, &mast);
-	set_hooks(&mast);
-	mlx_loop(mast.mlx);
-//	player = init_player(map);
+	init_raycast_vars(mast, mast->map, mast->r);
+	// mast->r = r;
+	// ft_memcpy(r,mast->r,sizeof(*mast->r));
+	// mast->map = map;
+	// printf("you did it %f\n", mast->r->plane.y);
+	// printf("address of r = %p\n", mast->r);
+	// ft_memcpy(map,mast->map,sizeof(*mast->map));
+
+	load_engine(mast->map, mast);
+	
+	set_hooks(mast);
+	mlx_loop(mast->mlx);
 }
 
 int		main(int argc, char *argv[])
 {
 	if (argc == 2)
 	{
-		wolf3d(argv[1]);
+		wolf3d(argv[1]);//, &mast);
 	}
 	else
 	{

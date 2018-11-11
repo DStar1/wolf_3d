@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 15:18:47 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/09 16:59:21 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/10 17:29:22 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,19 @@ int		key_press_hook(int keycode, t_mlx *mast)
 	printf("KEYCODE:  %d\n", keycode);
 	if (keycode == 53)//exit
 		exit(1);
-	// else if (keycode == 126)//up
-	// 	move_forward(mast);
-	// else if (keycode == 125)//down
-	// 	move_back(mast);
-	// else if (keycode == 124)//right
-	// 	move_right(mast);
-	// else if (keycode == 123)//left
-	// 	move_left(mast);
+	else if (keycode == 126)//up
+		move_forward(mast);
+	else if (keycode == 125)//down
+		move_back(mast);
+	else if (keycode == 124)//right
+		move_right(mast);
+	else if (keycode == 123)//left
+		move_left(mast);
 	// // else if (keycode == 49)//space
 	// 	//jump?
 	// // re_draw()
+	start(mast, mast->map);
+	
 	return (0);
 }
 
