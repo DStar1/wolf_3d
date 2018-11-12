@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 17:34:04 by dmendelo          #+#    #+#             */
-/*   Updated: 2018/11/10 17:34:34 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/12 14:16:35 by dmendelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,8 @@ void			configure_line(t_mlx *m, t_map *map, int x)//t_raycast *r, t_mlx *m, t_ma
 		draw_end = m->height - 1;
 	if (m->map->map[m->r->map.y][m->r->map.x] == '1')
 		color = RGB_GREY;
-//	if (m->r->side)
-//		color += 58;
+	if (m->r->side)
+		color += 18;
 	verLine(x, draw_start, draw_end, color, m);
 }
 
@@ -172,8 +172,8 @@ void			start(t_mlx *m, t_map *map){
     // // cls();
 
     //speed modifiers
-    m->r->moveSpeed = .2; //the constant value is in squares/second
-    m->r->rotSpeed = .2; //the constant value is in radians/second
+    m->r->moveSpeed = .05; //the constant value is in squares/second
+    m->r->rotSpeed = .05; //the constant value is in radians/second
     // //speed modifiers
     // m->r->moveSpeed = m->r->frameTime * 5.0; //the constant value is in squares/second
     // m->r->rotSpeed = m->r->frameTime * 3.0; //the constant value is in radians/second
