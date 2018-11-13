@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
+/*   By: dmendelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/07 00:26:23 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/10 17:34:56 by hasmith          ###   ########.fr       */
+/*   Created: 2018/11/12 18:56:09 by dmendelo          #+#    #+#             */
+/*   Updated: 2018/11/12 19:00:16 by dmendelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,18 +91,9 @@ typedef struct		s_raycast
 
 // typedef	struct		s_thread
 // {
-// 	t_mlx	*m;
+// 	t_wolf	*m;
 // 	int		count;
 // }					t_thread;
-
-// // Later impliment for master struct
-// typedef	struct		s_mast
-// {
-// 	t_mlx	*mlx;
-// 	t_map	*map;
-// 	t_raycast *r;
-
-// }					t_mast;
 
 typedef struct		s_mlx
 {
@@ -132,22 +123,31 @@ typedef struct		s_mlx
 	/////////////////////////
 }					t_mlx;
 
+// Later impliment for master struct
+typedef	struct		s_wolf
+{
+	t_mlx	*mlx;
+	t_map	*map;
+	t_raycast *r;
+
+}					t_wolf;
+
 t_map			*read_validate_map(char *filename);
 
 void			ft_print_strings(char **strings);
 char			**strsplit(char *str);
 char			*replace_char(char *s, int old, int new_);
 int				ptr_count(char **s);
-void			set_hooks(t_mlx *m);
-void			start(t_mlx *m, t_map *map);
-int 			verLine(int x, int y1, int y2, int color, t_mlx *m);
-void			init_raycast_vars(t_mlx *m, t_map *map, t_raycast *r);
-void			move_forward(t_mlx *m);
-void			move_back(t_mlx *m);
-void			move_left(t_mlx *m);
-void			move_right(t_mlx *m);
-int				key_press_hook(int keycode, t_mlx *mast);
-void			create_image(t_mlx *m);
-void	pixel_str(t_mlx *m);
+void			set_hooks(t_wolf *m);
+int				start(t_wolf *m);
+int 			verLine(int x, int y1, int y2, int color, t_wolf *m);
+void			init_raycast_vars(t_wolf *m);
+void			move_forward(t_wolf *m);
+void			move_back(t_wolf *m);
+void			move_left(t_wolf *m);
+void			move_right(t_wolf *m);
+int				key_press_hook(int keycode, t_wolf *mast);
+void			create_image(t_wolf *m);
+void	pixel_str(t_wolf *m);
 
 #endif 

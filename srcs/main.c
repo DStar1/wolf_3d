@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
+/*   By: dmendelo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/07 00:26:23 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/12 14:51:33 by dmendelo         ###   ########.fr       */
+/*   Created: 2018/11/12 18:53:49 by dmendelo          #+#    #+#             */
+/*   Updated: 2018/11/12 19:07:35 by dmendelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,57 +18,56 @@
 ** creates a string with alocated space for all pixels on screen
 */
 
-void	pixel_str(t_mlx *m)
+void	pixel_str(t_wolf *m)
 {
-	m->img_ptr = mlx_new_image(m->mlx, m->width, m->height);
-	m->img_int = mlx_get_data_addr(
-		m->img_ptr, &m->bpp, &m->size_line, &m->endian);
-	m->bpp /= 8;
+	m->mlx->img_ptr = mlx_new_image(m->mlx->mlx, m->mlx->width, m->mlx->height);
+	m->mlx->img_int = mlx_get_data_addr(
+		m->mlx->img_ptr, &(m->mlx->bpp), &(m->mlx->size_line), &(m->mlx->endian));
+	m->mlx->bpp /= 8;
 }
 
 /*
 ** puts all pixles to screen, and then destroys the image
 */
 
-void	create_image(t_mlx *m)
+void	create_image(t_wolf *m)
 {
-	mlx_put_image_to_window(m->mlx, m->win, m->img_ptr, 0, 0);
-	// mlx_destroy_image(m->mlx, m->img_ptr);///maybe
-	// mlx_clear_window(m->mlx, m->win);//////better?
+	mlx_put_image_to_window(m->mlx->mlx, m->mlx->win, m->mlx->img_ptr, 0, 0);
+	// mlx_destroy_image(m->mlx->mlx, m->mlx->img_ptr);///maybe
+	// mlx_clear_window(m->mlx->mlx, m->mlx->win);//////better?
 }
 
 
 
 
-
-void init(t_mlx *mast){
-	mast->height = 1000;
-	mast->width = 1000;
-	mast->space = 0;
-	mast->im_buff_size = mast->height * mast->width;
-	mast->mouse_x = mast->width/2;
-	mast->mouse_y = mast->height/2;
-	mast->theme = 0;
+void init(t_wolf *m){
+	m->mlx->height = 1000;
+	m->mlx->width = 1000;
+	m->mlx->space = 0;
+	m->mlx->im_buff_size = m->mlx->height * m->mlx->width;
+	m->mlx->mouse_x = m->mlx->width/2;
+	m->mlx->mouse_y = m->mlx->height/2;
+	m->mlx->theme = 0;
 }
 
-void pixel_put(t_mlx *mlx, int x, int y, int color){
-	if (x < mlx->wsize && y < mlx->wsize)
+void pixel_put(t_wolf *m, int x, int y, int color){
+	if (x < m->mlx->wsize && y < m->mlx->wsize)
 		// if (y >= 0 && x >= 0) /////Maybe add back
 		{
-		//	printf("bpp = %d\n", mlx->bpp);
-//			mlx->bpp = 4;
-			mlx->img_int[y * mlx->size_line + x * mlx->bpp] = color;
-	mlx->img_int[y * mlx->size_line + x * mlx->bpp + 1] = color >> 8;
-	mlx->img_int[y * mlx->size_line + x * mlx->bpp + 2] = color >> 16;
-		//	int i = (x) + (y * mlx->size_line / 4);
-			// mlx->img_int[((y * mlx->size_line/4) + x)] = color;
-//			mlx->img_int[i] = color;
-//			mlx->img_int[++i] = color >> 8;
-//			mlx->img_int[++i] = color >> 16;
+		//	printf("bpp = %d\n", m->mlx->bpp);
+//			m->mlx->bpp = 4;
+			m->mlx->img_int[y * m->mlx->size_line + x * m->mlx->bpp] = color;
+	m->mlx->img_int[y * m->mlx->size_line + x * m->mlx->bpp + 1] = color >> 8;
+	m->mlx->img_int[y * m->mlx->size_line + x * m->mlx->bpp + 2] = color >> 16;
+		//	int i = (x) + (y * m->mlx->size_line / 4);
+			// m->mlx->img_int[((y * m->mlx->size_line/4) + x)] = color;
+//			m->mlx->img_int[i] = color;
+//			m->mlx->img_int[++i] = color >> 8;
+//			m->mlx->img_int[++i] = color >> 16;
 		}
 }
 
-int verLine(int x, int y1, int y2, int color, t_mlx *m){
+int verLine(int x, int y1, int y2, int color, t_wolf *m){
 	// m->img_int;//pixels
 
 	// if(y2 < y1) {y1 += y2; y2 = y1 - y2; y1 -= y2;} //swap y1 and y2
@@ -88,34 +87,37 @@ int verLine(int x, int y1, int y2, int color, t_mlx *m){
 	return 1;
 }
 
-void			load_engine(t_map *map, t_mlx *m)
+void			load_engine(t_wolf *m)
 {
-	m->wsize = 1000;
-	m->mlx = mlx_init();
-	m->win = mlx_new_window(m->mlx, m->wsize, m->wsize, "wolf3d");
+	m->mlx->wsize = 1000;
+	m->mlx->mlx = mlx_init();
+	m->mlx->win = mlx_new_window(m->mlx->mlx, m->mlx->wsize, m->mlx->wsize, "wolf3d");
 	init(m);
 	pixel_str(m);
-	start(m, map);
+	start(m);
 
 }
 
 void			wolf3d(char *mapname)//, t_mlx *mast)
 {
 	// t_map				*map;
-	t_mlx				*mast;
+	t_wolf				*mast;
 	t_raycast			*r;
 
-	mast = malloc(sizeof(t_mlx));
+	mast = malloc(sizeof(t_wolf));
 	ft_bzero(mast, sizeof(*mast));
 	r = malloc(sizeof(*r));
-	mast->r = r;
+	mast->mlx = malloc(sizeof(t_mlx));
+	mast->r  = r;
+	// mast->mlx->wsize = 100;
+	printf("Wsize: %d", mast->mlx->wsize);
 	mast->map = read_validate_map(mapname);
 	if (!mast->map)
 	{
 		write(2, MAP_ERROR, sizeof(MAP_ERROR));
 		return ;
 	}
-	init_raycast_vars(mast, mast->map, mast->r);
+	init_raycast_vars(mast);
 	// mast->r = r;
 	// ft_memcpy(r,mast->r,sizeof(*mast->r));
 	// mast->map = map;
@@ -123,10 +125,10 @@ void			wolf3d(char *mapname)//, t_mlx *mast)
 	// printf("address of r = %p\n", mast->r);
 	// ft_memcpy(map,mast->map,sizeof(*mast->map));
 
-	load_engine(mast->map, mast);
+	load_engine(mast);
 	
 	set_hooks(mast);
-	mlx_loop(mast->mlx);
+	mlx_loop(mast->mlx->mlx);
 }
 
 int		main(int argc, char *argv[])
