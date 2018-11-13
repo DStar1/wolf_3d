@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 17:34:04 by dmendelo          #+#    #+#             */
-/*   Updated: 2018/11/12 22:46:46 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/12 22:58:51 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,9 +143,9 @@ void			configure_line(t_wolf *m, int x)//t_raycast *r, t_wolf *m, t_map *map, in
 
 void			start(t_wolf *m){
 	// t_raycast			*r;
-	mlx_destroy_image(m->mlx->mlx, m->mlx->img_ptr);
-	pixel_str(m);
-	// ft_bzero(&(m->mlx->img_int), sizeof(m->mlx->img_int));
+	// mlx_destroy_image(m->mlx->mlx, m->mlx->img_ptr);
+	// pixel_str(m);
+	ft_bzero(m->mlx->img_int, m->mlx->width * m->mlx->height * 4);//1000 * 1000 * 4);
 	// r = m->r;//round about way of master struct
 
 	// r = malloc(sizeof(t_raycast));
