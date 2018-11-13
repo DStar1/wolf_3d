@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 17:34:04 by dmendelo          #+#    #+#             */
-/*   Updated: 2018/11/12 17:48:41 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/12 17:56:05 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void			print_r_struct(t_wolf *m)//t_raycast *r)
 	printf("camera_x = %f\n", m->r->camera_x);
 }
 
-void			init_raycast_vars(t_wolf *m, t_raycast *r)
+void			init_raycast_vars(t_wolf *m)
 {
 	m->r->pos.x = m->map->start.x;
 	m->r->pos.y = m->map->start.y;
@@ -138,7 +138,7 @@ void			configure_line(t_wolf *m, int x)//t_raycast *r, t_wolf *m, t_map *map, in
 	verLine(x, draw_start, draw_end, color, m);
 }
 
-void			start(t_wolf *m, t_map *map){
+void			start(t_wolf *m){
 	// t_raycast			*r;
 	mlx_destroy_image(m->mlx->mlx, m->mlx->img_ptr);
 	pixel_str(m);

@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 00:26:23 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/12 17:49:53 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/12 17:55:26 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,14 @@ int verLine(int x, int y1, int y2, int color, t_wolf *m){
 	return 1;
 }
 
-void			load_engine(t_map *map, t_wolf *m)
+void			load_engine(t_wolf *m)
 {
 	m->mlx->wsize = 1000;
 	m->mlx->mlx = mlx_init();
 	m->mlx->win = mlx_new_window(m->mlx->mlx, m->mlx->wsize, m->mlx->wsize, "wolf3d");
 	init(m);
 	pixel_str(m);
-	start(m, map);
+	start(m);
 
 }
 
@@ -117,7 +117,7 @@ void			wolf3d(char *mapname)//, t_mlx *mast)
 		write(2, MAP_ERROR, sizeof(MAP_ERROR));
 		return ;
 	}
-	init_raycast_vars(mast, mast->r);
+	init_raycast_vars(mast);
 	// mast->r = r;
 	// ft_memcpy(r,mast->r,sizeof(*mast->r));
 	// mast->map = map;
@@ -125,7 +125,7 @@ void			wolf3d(char *mapname)//, t_mlx *mast)
 	// printf("address of r = %p\n", mast->r);
 	// ft_memcpy(map,mast->map,sizeof(*mast->map));
 
-	load_engine(mast->map, mast);
+	load_engine(mast);
 	
 	set_hooks(mast);
 	mlx_loop(mast->mlx->mlx);

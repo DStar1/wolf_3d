@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 00:26:23 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/12 17:49:06 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/12 17:54:47 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,9 +139,9 @@ char			**strsplit(char *str);
 char			*replace_char(char *s, int old, int new_);
 int				ptr_count(char **s);
 void			set_hooks(t_wolf *m);
-void			start(t_wolf *m, t_map *map);
+void			start(t_wolf *m);
 int 			verLine(int x, int y1, int y2, int color, t_wolf *m);
-void			init_raycast_vars(t_wolf *m, t_raycast *r);
+void			init_raycast_vars(t_wolf *m);
 void			move_forward(t_wolf *m);
 void			move_back(t_wolf *m);
 void			move_left(t_wolf *m);

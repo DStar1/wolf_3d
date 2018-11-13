@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 15:18:47 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/12 17:33:55 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/12 17:56:29 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		key_press_hook(int keycode, t_wolf *mast)
 	// // else if (keycode == 49)//space
 	// 	//jump?
 	// // re_draw()
-	start(mast, mast->map);
+	start(mast);
 	
 	return (0);
 }
