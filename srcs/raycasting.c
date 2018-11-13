@@ -6,13 +6,13 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 17:34:04 by dmendelo          #+#    #+#             */
-/*   Updated: 2018/11/10 17:34:34 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/12 17:48:41 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void			print_r_struct(t_mlx *m)//t_raycast *r)
+void			print_r_struct(t_wolf *m)//t_raycast *r)
 {
 	if (!m->r)
 		return ;
@@ -29,10 +29,10 @@ void			print_r_struct(t_mlx *m)//t_raycast *r)
 	printf("camera_x = %f\n", m->r->camera_x);
 }
 
-void			init_raycast_vars(t_mlx *m, t_map *map, t_raycast *r)
+void			init_raycast_vars(t_wolf *m, t_raycast *r)
 {
-	m->r->pos.x = map->start.x;
-	m->r->pos.y = map->start.y;
+	m->r->pos.x = m->map->start.x;
+	m->r->pos.y = m->map->start.y;
 	m->r->direction.x = -1;
 	m->r->direction.y = 0;
 	m->r->plane.x = 0;
@@ -41,10 +41,10 @@ void			init_raycast_vars(t_mlx *m, t_map *map, t_raycast *r)
 	m->r->oldTime = 0; //time of previous frame
 }
 
-void			configure_ray(t_mlx *m, int x)//t_raycast *r, t_mlx *m, int x)
+void			configure_ray(t_wolf *m, int x)//t_raycast *r, t_wolf *m, int x)
 {
 
-	m->r->camera_x = (double)(2.0 * x) / (double)m->width - 1;
+	m->r->camera_x = (double)(2.0 * x) / (double)m->mlx->width - 1;
 	printf("camera = %f\n", m->r->camera_x);
 	m->r->ray.x = m->r->direction.x + m->r->plane.x * m->r->camera_x;
 	m->r->ray.y = m->r->direction.y + m->r->plane.y * m->r->camera_x;
@@ -54,7 +54,7 @@ void			configure_ray(t_mlx *m, int x)//t_raycast *r, t_mlx *m, int x)
 	m->r->delta_dist.y = fabs(1 / m->r->ray.y);
 }
 
-void			pre_dda(t_mlx *m)//t_raycast *r)
+void			pre_dda(t_wolf *m)//t_raycast *r)
 {
 	if (m->r->ray.x < 0)
 	{
@@ -78,7 +78,7 @@ void			pre_dda(t_mlx *m)//t_raycast *r)
 	}
 }
 
-void			do_dda(t_mlx *m, t_map *map)//t_raycast *r, t_map *map)
+void			do_dda(t_wolf *m)//t_raycast *r, t_map *map)
 {
 	m->r->hit = 0;
 	while (!m->r->hit)
@@ -110,27 +110,27 @@ void			do_dda(t_mlx *m, t_map *map)//t_raycast *r, t_map *map)
 	}
 }
 
-void			wall_distance(t_mlx *m)//t_raycast *r)
+void			wall_distance(t_wolf *m)//t_raycast *r)
 {
 	m->r->perp_wall_dist = (m->r->side == 0) ?
 	(m->r->map.x - m->r->pos.x + (1 - m->r->step.x) / 2) / m->r->ray.x :
 	(m->r->map.y - m->r->pos.y + (1 - m->r->step.y) / 2) / m->r->ray.y;
 }
 
-void			configure_line(t_mlx *m, t_map *map, int x)//t_raycast *r, t_mlx *m, t_map *map, int x)
+void			configure_line(t_wolf *m, int x)//t_raycast *r, t_wolf *m, t_map *map, int x)
 {
 	int					line_height;
 	int					draw_start;
 	int					draw_end;
 	int					color;
 
-	line_height = (int)(m->height / m->r->perp_wall_dist);
-	draw_start = -line_height / 2 + m->height / 2;
+	line_height = (int)(m->mlx->height / m->r->perp_wall_dist);
+	draw_start = -line_height / 2 + m->mlx->height / 2;
 	if (draw_start < 0)
 		draw_start = 0;
-	draw_end = line_height / 2 + m->height / 2;
-	if (draw_end >= m->height)
-		draw_end = m->height - 1;
+	draw_end = line_height / 2 + m->mlx->height / 2;
+	if (draw_end >= m->mlx->height)
+		draw_end = m->mlx->height - 1;
 	if (m->map->map[m->r->map.y][m->r->map.x] == '1')
 		color = RGB_GREY;
 //	if (m->r->side)
@@ -138,9 +138,9 @@ void			configure_line(t_mlx *m, t_map *map, int x)//t_raycast *r, t_mlx *m, t_ma
 	verLine(x, draw_start, draw_end, color, m);
 }
 
-void			start(t_mlx *m, t_map *map){
+void			start(t_wolf *m, t_map *map){
 	// t_raycast			*r;
-	mlx_destroy_image(m->mlx, m->img_ptr);
+	mlx_destroy_image(m->mlx->mlx, m->mlx->img_ptr);
 	pixel_str(m);
 	// r = m->r;//round about way of master struct
 
@@ -148,7 +148,7 @@ void			start(t_mlx *m, t_map *map){
 	// init_raycast_vars(m, map, r);
 
 	//assert(m->r);
-	for(int x = 0; x < m->width; x++)
+	for(int x = 0; x < m->mlx->width; x++)
 	{
 		// assert(m->r);
 		configure_ray(m, x);//configure_ray(r, m, x);
@@ -156,11 +156,11 @@ void			start(t_mlx *m, t_map *map){
 		m->r->hit = 0;
 		pre_dda(m);//pre_dda(r);
 		//perform DDA
-		do_dda(m, map);//do_dda(r, map);
+		do_dda(m);//do_dda(r, map);
 		//Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
 		wall_distance(m);//wall_distance(r);
 //		print_r_struct(&r);
-		configure_line(m, map, x);//configure_line(r, m, map, x);
+		configure_line(m, x);//configure_line(r, m, map, x);
 	}
 
     // //timing for input and FPS counter
