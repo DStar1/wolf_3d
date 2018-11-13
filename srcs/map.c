@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 14:35:10 by dmendelo          #+#    #+#             */
-/*   Updated: 2018/11/12 17:55:35 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/12 22:46:09 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ int				validate_map(t_map **map, int fd)
 	map_[p] = NULL;
 	printf("start at [%f][%f]\n", (*map)->start.y, (*map)->start.x);
 	ft_print_strings(map_);
+	map_[(int)(*map)->start.y][(int)(*map)->start.x] = '0';
 	(*map)->map = map_;
 	return (1);
 }

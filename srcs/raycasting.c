@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 17:34:04 by dmendelo          #+#    #+#             */
-/*   Updated: 2018/11/12 17:56:05 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/12 22:46:46 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,24 @@ void			print_r_struct(t_wolf *m)//t_raycast *r)
 
 void			init_raycast_vars(t_wolf *m)
 {
-	m->r->pos.x = m->map->start.x;
-	m->r->pos.y = m->map->start.y;
+	m->r->pos.x = m->map->start.x - 0.05;
+	m->r->pos.y = m->map->start.y - 0.05;
 	m->r->direction.x = -1;
 	m->r->direction.y = 0;
 	m->r->plane.x = 0;
 	m->r->plane.y = 0.66;
 	m->r->time = 0; //time of current frame
 	m->r->oldTime = 0; //time of previous frame
+    //speed modifiers
+    m->r->moveSpeed = .05; //the constant value is in squares/second
+    m->r->rotSpeed = .05; //the constant value is in radians/second
 }
 
 void			configure_ray(t_wolf *m, int x)//t_raycast *r, t_wolf *m, int x)
 {
 
 	m->r->camera_x = (double)(2.0 * x) / (double)m->mlx->width - 1;
-	printf("camera = %f\n", m->r->camera_x);
+	// printf("camera = %f\n", m->r->camera_x);
 	m->r->ray.x = m->r->direction.x + m->r->plane.x * m->r->camera_x;
 	m->r->ray.y = m->r->direction.y + m->r->plane.y * m->r->camera_x;
 	m->r->map.x = (int)(floor(m->r->pos.x));
@@ -100,9 +103,9 @@ void			do_dda(t_wolf *m)//t_raycast *r, t_map *map)
 		{
 	//		print_r_struct(r);
 		}
-		if (m->map->map[m->r->map.y][m->r->map.x] == '1')
+		if (m->map->map[m->r->map.x][m->r->map.y] == '1')
 		{
-			printf("hit! -> map[%i][%i]\n", m->r->map.y, m->r->map.x);
+			// printf("hit! -> map[%i][%i]\n", m->r->map.y, m->r->map.x);
 //			printf("camera = %f\n", m->r->camera_x);
 //			print_r_struct(r);
 			m->r->hit = 1;
@@ -131,10 +134,10 @@ void			configure_line(t_wolf *m, int x)//t_raycast *r, t_wolf *m, t_map *map, in
 	draw_end = line_height / 2 + m->mlx->height / 2;
 	if (draw_end >= m->mlx->height)
 		draw_end = m->mlx->height - 1;
-	if (m->map->map[m->r->map.y][m->r->map.x] == '1')
+	if (m->map->map[m->r->map.x][m->r->map.y] == '1')
 		color = RGB_GREY;
-//	if (m->r->side)
-//		color += 58;
+	if (m->r->side)
+		color += 58;
 	verLine(x, draw_start, draw_end, color, m);
 }
 
@@ -142,6 +145,7 @@ void			start(t_wolf *m){
 	// t_raycast			*r;
 	mlx_destroy_image(m->mlx->mlx, m->mlx->img_ptr);
 	pixel_str(m);
+	// ft_bzero(&(m->mlx->img_int), sizeof(m->mlx->img_int));
 	// r = m->r;//round about way of master struct
 
 	// r = malloc(sizeof(t_raycast));
@@ -171,9 +175,7 @@ void			start(t_wolf *m){
     // // redraw();
     // // cls();
 
-    //speed modifiers
-    m->r->moveSpeed = .2; //the constant value is in squares/second
-    m->r->rotSpeed = .2; //the constant value is in radians/second
+
     // //speed modifiers
     // m->r->moveSpeed = m->r->frameTime * 5.0; //the constant value is in squares/second
     // m->r->rotSpeed = m->r->frameTime * 3.0; //the constant value is in radians/second

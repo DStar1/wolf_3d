@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 15:18:47 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/12 17:56:29 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/12 22:42:04 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 int		key_press_hook(int keycode, t_wolf *mast)
 {
-	printf("KEYCODE:  %d\n", keycode);
+	// printf("KEYCODE:  %d\n", keycode);
 	if (keycode == 53)//exit
 		exit(1);
 	else if (keycode == 126)//up
@@ -29,6 +29,8 @@ int		key_press_hook(int keycode, t_wolf *mast)
 		move_right(mast);
 	else if (keycode == 123)//left
 		move_left(mast);
+	else if (keycode == 1)
+		sprint(mast);
 	// // else if (keycode == 49)//space
 	// 	//jump?
 	// // re_draw()

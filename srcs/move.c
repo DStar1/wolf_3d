@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 00:26:23 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/12 17:55:43 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/12 22:40:18 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,24 @@
 	// m->r->direction.y = 0;
 	// m->r->plane.x = 0;
 	// m->r->plane.y = 0.66;
+
+void    sprint(t_wolf *m)
+{
+    if (!m->r->sprint)
+    {
+	    //speed modifiers
+    	m->r->moveSpeed -= .2; //the constant value is in squares/second
+	    m->r->rotSpeed -= .2; //the constant value is in radians/second
+        m->r->sprint = 1;
+    }
+    else
+    {
+    	m->r->moveSpeed += .2; //the constant value is in squares/second
+	    m->r->rotSpeed += .2; //the constant value is in radians/second
+        m->r->sprint = 0;
+    }
+}
+
 void	move_forward(t_wolf *m)
 {
     if(m->map->map[(int)(m->r->pos.x + m->r->direction.x * m->r->moveSpeed)][(int)(m->r->pos.y)] == '0') m->r->pos.x += m->r->direction.x * m->r->moveSpeed;

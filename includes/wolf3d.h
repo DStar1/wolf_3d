@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 00:26:23 by hasmith           #+#    #+#             */
-/*   Updated: 2018/11/12 17:54:47 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/12 22:32:01 by hasmith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct		s_raycast
 	int				side;
 
     double			moveSpeed;
+	int				sprint;
     double			rotSpeed;
 	double			frameTime;
   	double 			time;
@@ -117,10 +118,10 @@ typedef struct		s_mlx
 
 	int				theme;
 
-	//change to master struct//
-	t_map			*map;
-	t_raycast 		*r;
-	/////////////////////////
+	// //change to master struct//
+	// t_map			*map;
+	// t_raycast 		*r;
+	// /////////////////////////
 }					t_mlx;
 
 // Later impliment for master struct
@@ -148,6 +149,7 @@ void			move_left(t_wolf *m);
 void			move_right(t_wolf *m);
 int				key_press_hook(int keycode, t_wolf *mast);
 void			create_image(t_wolf *m);
-void	pixel_str(t_wolf *m);
+void			pixel_str(t_wolf *m);
+void			sprint(t_wolf *m);
 
 #endif 
