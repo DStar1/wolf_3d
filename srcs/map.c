@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 14:35:10 by dmendelo          #+#    #+#             */
-/*   Updated: 2018/11/09 16:37:26 by hasmith          ###   ########.fr       */
+/*   Updated: 2018/11/12 17:31:16 by dmendelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,9 @@ int				validate_line(char *line, t_map **map)
 	{
 		if (line[p] == 'S')
 		{
-			(*map)->start.x = p;
-			(*map)->start.y = line_num;
+			(*map)->start.x = p + .5;
+			(*map)->start.y = line_num + .5;
+			line[p] = '0';
 		}
 		else if (line[p] != '0' && line[p] != '1')
 		{

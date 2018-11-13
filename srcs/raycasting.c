@@ -6,7 +6,7 @@
 /*   By: hasmith <hasmith@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 17:34:04 by dmendelo          #+#    #+#             */
-/*   Updated: 2018/11/12 14:16:35 by dmendelo         ###   ########.fr       */
+/*   Updated: 2018/11/12 16:57:55 by dmendelo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,14 +134,15 @@ void			configure_line(t_mlx *m, t_map *map, int x)//t_raycast *r, t_mlx *m, t_ma
 	if (m->map->map[m->r->map.y][m->r->map.x] == '1')
 		color = RGB_GREY;
 	if (m->r->side)
-		color += 18;
+		color += 118;
 	verLine(x, draw_start, draw_end, color, m);
 }
 
 void			start(t_mlx *m, t_map *map){
 	// t_raycast			*r;
-	mlx_destroy_image(m->mlx, m->img_ptr);
-	pixel_str(m);
+//	mlx_destroy_image(m->mlx, m->img_ptr);
+//	pixel_str(m);
+	ft_bzero(m->img_int, 1000 * 1000 * 4);
 	// r = m->r;//round about way of master struct
 
 	// r = malloc(sizeof(t_raycast));
